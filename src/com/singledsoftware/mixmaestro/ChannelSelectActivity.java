@@ -3,13 +3,17 @@ package com.singledsoftware.mixmaestro;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.widget.ListView;
 
 public class ChannelSelectActivity extends Activity {
+
+    private ListView channelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel_select);
+        channelList = (ListView)this.findViewById(R.id.channel_list);
     }
 
     @Override
@@ -18,5 +22,5 @@ public class ChannelSelectActivity extends Activity {
         getMenuInflater().inflate(R.menu.channel_select, menu);
         return true;
     }
-    
+
 }
