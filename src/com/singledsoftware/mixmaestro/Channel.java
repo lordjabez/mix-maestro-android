@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @see Serializable
  * @author Judson D Neer
  */
-public class Channel implements Serializable {
+public class Channel implements Serializable, Comparable<Channel> {
 
     // Unique serializable version ID
     private static final long serialVersionUID = -3705403776567370897L;
@@ -39,12 +39,33 @@ public class Channel implements Serializable {
     }
 
     /**
+     * @return The channel identifier
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
      * @see java.io.Serializable#toString()
      */
     @Override
     public String toString() {
         // TODO put id and type in parens?
-        return name;
+        if (type == 'A') {
+            return name + "(Aux " + id + ")";
+        }
+        else {
+            return name;
+        }
+    }
+
+    /**
+     * @see java.lang.Comparable#compareTo()
+     */
+    @Override
+    public int compareTo(Channel channel) {
+        // TODO enhance this once types are fully implemented
+        return Integer.parseInt(id) - Integer.parseInt(channel.getId());
     }
 
 }
