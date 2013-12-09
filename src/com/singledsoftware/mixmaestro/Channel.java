@@ -50,9 +50,8 @@ public class Channel implements Serializable, Comparable<Channel> {
      */
     @Override
     public String toString() {
-        // TODO put id and type in parens?
         if (type == 'A') {
-            return name + "(Aux " + id + ")";
+            return name + " (Aux " + id + ")";
         }
         else {
             return name;
