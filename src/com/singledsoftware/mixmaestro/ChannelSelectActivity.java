@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -70,8 +71,10 @@ public class ChannelSelectActivity extends Activity implements OnItemClickListen
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // Grab the channel object associated with the selected item.
         Channel channel = (Channel)parent.getItemAtPosition(position);
-        Intent intent = new Intent(this, ChannelSelectActivity.class);  // TODO change to the proper new activity for channel selection
+        // Open up a new activity to edit this channel (TODO make an editing activity)
+        Intent intent = new Intent(this, ChannelSelectActivity.class);
         intent.putExtra("channel", channel);
         startActivity(intent);
     }
@@ -81,21 +84,29 @@ public class ChannelSelectActivity extends Activity implements OnItemClickListen
      */
     @Override
     public void processResponse(JSONObject response) {
+        // If no valid response was received, give an error and quit.
         if (response == null) {
-            Toast.makeText(getBaseContext(), "Unable to contact Mix Maestro server", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Unable to contact server", Toast.LENGTH_LONG).show();
             return;
         }
+        // Build a list of channels from the returned JSON
+        // object by iterating over the keys in the object.
         ArrayList<Channel> channels = new ArrayList<Channel>();
         for(Iterator<?> iter = response.keys(); iter.hasNext();) {
             String id = (String)iter.next();
+            // Construct the channel object by pulling data from JSON.
             try {
                 JSONObject aux = (JSONObject)response.get(id);
-                char type = 'A';
                 String name = aux.getString("name");
-                channels.add(new Channel(id, type, name));
-            } catch (JSONException e) {}
-            Collections.sort(channels);
+                channels.add(new Channel(id, 'A', name));
+            }
+            // If something goes wrong, just ignore the item.
+            catch (JSONException e) {
+                Log.w(this.getClass().getName(), "Invalid aux data received from server");
+            }
         }
+        // Sort the list of channels by identifier, and then shove it into the list widget.
+        Collections.sort(channels);
         ArrayAdapter<Channel> adapter = new ArrayAdapter<Channel>(this, android.R.layout.simple_list_item_1, channels);
         channelList.setAdapter(adapter);
     }
