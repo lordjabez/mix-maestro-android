@@ -15,8 +15,8 @@ public class Channel implements Serializable {
     // Unique serializable version ID
     private static final long serialVersionUID = -3705403776567370897L;
 
-    // Unique numeric identifier for the channel
-    private final int id;
+    // Unique identifier for the channel
+    private final String id;
 
     // Single character that identifies a channel type
     // TODO make this an enumeration
@@ -32,7 +32,7 @@ public class Channel implements Serializable {
      * @param t New type
      * @param n New name
      */
-    public Channel(int i, char t, String n) {
+    public Channel(String i, char t, String n) {
         id = i;
         type = t;
         name = n;
